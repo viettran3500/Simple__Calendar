@@ -1,28 +1,28 @@
 package com.viet.simplecalendar.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import com.viet.simplecalendar.CalendarAdapter
-import com.viet.simplecalendar.MainActivity
+import com.viet.simplecalendar.adapter.CalendarAdapter
+import com.viet.simplecalendar.activity.MainActivity
 import com.viet.simplecalendar.R
+import com.viet.simplecalendar.utils.checkMonth
 import kotlinx.android.synthetic.main.fragment_six.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class SixFragment : Fragment(){
+class SixFragment : Fragment() {
 
-    lateinit var mainActivity : MainActivity
-    val MAX_DAY = 43
-    var calendar : Calendar = Calendar.getInstance()
-    var dateFormat : SimpleDateFormat = SimpleDateFormat("MMMM yyyy")
+    lateinit var mainActivity: MainActivity
+    val MAX_DAY = 50
+    var calendar: Calendar = Calendar.getInstance()
+    var dateFormat: SimpleDateFormat = SimpleDateFormat("MMMM yyyy")
 
-    var dates : MutableList<Date> = mutableListOf()
-    lateinit var calendarAdapter : CalendarAdapter
+    var dates: MutableList<Date> = mutableListOf()
+    lateinit var calendarAdapter: CalendarAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,28 +32,24 @@ class SixFragment : Fragment(){
         var view: View = inflater.inflate(R.layout.fragment_six, container, false)
         mainActivity = activity as MainActivity
         calendar = mainActivity.calendar
-        while(calendar.get(Calendar.MONTH) != 5){
-            if(calendar.get(Calendar.MONTH) > 5)
-                calendar.add(Calendar.MONTH, -1)
-            else
-                calendar.add(Calendar.MONTH, 1)
-        }
+        checkMonth(calendar, 5)
 
-        var monthYear : String = dateFormat.format(calendar.time)
+        var monthYear: String = dateFormat.format(calendar.time)
         view.tvMonthYear.text = monthYear
         dates.clear()
-        var monthCalendar : Calendar = calendar.clone() as Calendar
+        var monthCalendar: Calendar = calendar.clone() as Calendar
         monthCalendar.set(Calendar.DAY_OF_MONTH, 1)
-        var firstDayOfMonth : Int = monthCalendar.get(Calendar.DAY_OF_WEEK) - 1
-        monthCalendar.add(Calendar.DAY_OF_MONTH, -firstDayOfMonth)
+        var firstDayOfMonth: Int =
+            monthCalendar.get(Calendar.DAY_OF_WEEK) - (1 + mainActivity.index)
+        monthCalendar.add(Calendar.DAY_OF_MONTH, -(firstDayOfMonth + 7))
 
-        while (dates.size < MAX_DAY - 1){
+        while (dates.size < MAX_DAY - 1) {
             dates.add(monthCalendar.time)
             monthCalendar.add(Calendar.DAY_OF_MONTH, 1)
         }
         dates.add(calendar.time)
 
-        view.rcvCalendar.layoutManager = GridLayoutManager(this.context,7)
+        view.rcvCalendar.layoutManager = GridLayoutManager(this.context, 7)
         calendarAdapter = CalendarAdapter(dates)
         view.rcvCalendar.adapter = calendarAdapter
 

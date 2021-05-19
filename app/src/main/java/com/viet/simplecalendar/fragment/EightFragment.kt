@@ -6,16 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import com.viet.simplecalendar.CalendarAdapter
-import com.viet.simplecalendar.MainActivity
+import com.viet.simplecalendar.adapter.CalendarAdapter
+import com.viet.simplecalendar.activity.MainActivity
 import com.viet.simplecalendar.R
+import com.viet.simplecalendar.utils.checkMonth
 import kotlinx.android.synthetic.main.fragment_eight.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
 class EightFragment : Fragment(){
     lateinit var mainActivity : MainActivity
-    val MAX_DAY = 43
+    val MAX_DAY = 50
     var calendar : Calendar = Calendar.getInstance()
     var dateFormat : SimpleDateFormat = SimpleDateFormat("MMMM yyyy")
 
@@ -30,22 +31,19 @@ class EightFragment : Fragment(){
         var view: View = inflater.inflate(R.layout.fragment_seven, container, false)
         mainActivity = activity as MainActivity
         calendar = mainActivity.calendar
-        while(calendar.get(Calendar.MONTH) != 7){
-            if(calendar.get(Calendar.MONTH) > 7)
-                calendar.add(Calendar.MONTH, -1)
-            else
-                calendar.add(Calendar.MONTH, 1)
-        }
+
+        checkMonth(calendar, 7)
 
         var monthYear : String = dateFormat.format(calendar.time)
         view.tvMonthYear.text = monthYear
         dates.clear()
-        var monthCalendar : Calendar = calendar.clone() as Calendar
+        var monthCalendar: Calendar = calendar.clone() as Calendar
         monthCalendar.set(Calendar.DAY_OF_MONTH, 1)
-        var firstDayOfMonth : Int = monthCalendar.get(Calendar.DAY_OF_WEEK) - 1
-        monthCalendar.add(Calendar.DAY_OF_MONTH, -firstDayOfMonth)
+        var firstDayOfMonth: Int =
+            monthCalendar.get(Calendar.DAY_OF_WEEK) - (1 + mainActivity.index)
+        monthCalendar.add(Calendar.DAY_OF_MONTH, -(firstDayOfMonth + 7))
 
-        while (dates.size < MAX_DAY - 1){
+        while (dates.size < MAX_DAY - 1) {
             dates.add(monthCalendar.time)
             monthCalendar.add(Calendar.DAY_OF_MONTH, 1)
         }
