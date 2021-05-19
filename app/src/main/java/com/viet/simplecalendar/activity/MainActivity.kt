@@ -73,24 +73,9 @@ class MainActivity : AppCompatActivity() {
                 positionOffset: Float,
                 positionOffsetPixels: Int
             ) {
-
             }
 
             override fun onPageSelected(position: Int) {
-                if (currentPosition < position) {
-                    if (currentPosition == 0 && position == 11) {
-                        Log.e("aaa", "Down")
-                    } else {
-                        Log.e("aaa", "Up")
-                    }
-                } else {
-                    if (currentPosition == 11 && position == 0) {
-                        Log.e("aaa", "Up")
-                    } else {
-                        Log.e("aaa", "Down")
-                    }
-                }
-                currentPosition = position
             }
 
             override fun onPageScrollStateChanged(state: Int) {
