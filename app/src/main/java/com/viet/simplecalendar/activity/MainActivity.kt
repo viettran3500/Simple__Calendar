@@ -49,13 +49,13 @@ class MainActivity : AppCompatActivity() {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 var i = viewPager.currentItem
                 when (p2) {
-                    0 -> index = 0
-                    1 -> index = 1
-                    2 -> index = 2
-                    3 -> index = 3
-                    4 -> index = 4
-                    5 -> index = 5
-                    6 -> index = 6
+                    0 -> index = 1
+                    1 -> index = 2
+                    2 -> index = 3
+                    3 -> index = 4
+                    4 -> index = 5
+                    5 -> index = 6
+                    6 -> index = 7
                 }
                 viewPager.adapter = adapter
                 viewPager.currentItem = i

@@ -14,14 +14,14 @@ import kotlinx.android.synthetic.main.fragment_eight.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class EightFragment : Fragment(){
-    lateinit var mainActivity : MainActivity
+class EightFragment : Fragment() {
+    lateinit var mainActivity: MainActivity
     val MAX_DAY = 50
-    var calendar : Calendar = Calendar.getInstance()
-    var dateFormat : SimpleDateFormat = SimpleDateFormat("MMMM yyyy")
+    var calendar: Calendar = Calendar.getInstance()
+    var dateFormat: SimpleDateFormat = SimpleDateFormat("MMMM yyyy")
 
-    var dates : MutableList<Date> = mutableListOf()
-    lateinit var calendarAdapter : CalendarAdapter
+    var dates: MutableList<Date> = mutableListOf()
+    lateinit var calendarAdapter: CalendarAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,14 +34,19 @@ class EightFragment : Fragment(){
 
         checkMonth(calendar, 7)
 
-        var monthYear : String = dateFormat.format(calendar.time)
+        var monthYear: String = dateFormat.format(calendar.time)
         view.tvMonthYear.text = monthYear
         dates.clear()
         var monthCalendar: Calendar = calendar.clone() as Calendar
         monthCalendar.set(Calendar.DAY_OF_MONTH, 1)
         var firstDayOfMonth: Int =
-            monthCalendar.get(Calendar.DAY_OF_WEEK) - (1 + mainActivity.index)
-        monthCalendar.add(Calendar.DAY_OF_MONTH, -(firstDayOfMonth + 7))
+            monthCalendar.get(Calendar.DAY_OF_WEEK) - mainActivity.index
+
+        monthCalendar.add(Calendar.DAY_OF_MONTH, -firstDayOfMonth)
+        if (monthCalendar.get(Calendar.DAY_OF_MONTH) > 7)
+            monthCalendar.add(Calendar.DAY_OF_MONTH, -7)
+        else
+            monthCalendar.add(Calendar.DAY_OF_MONTH, -14)
 
         while (dates.size < MAX_DAY - 1) {
             dates.add(monthCalendar.time)
@@ -49,7 +54,7 @@ class EightFragment : Fragment(){
         }
         dates.add(calendar.time)
 
-        view.rcvCalendar.layoutManager = GridLayoutManager(this.context,7)
+        view.rcvCalendar.layoutManager = GridLayoutManager(this.context, 7)
         calendarAdapter = CalendarAdapter(dates)
         view.rcvCalendar.adapter = calendarAdapter
 

@@ -8,6 +8,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.viet.simplecalendar.R
+import com.viet.simplecalendar.activity.MainActivity
+import com.viet.simplecalendar.utils.dayClick
+import com.viet.simplecalendar.utils.numClick
 import java.util.*
 
 class CalendarAdapter(private var dayList: MutableList<Date>) :
@@ -24,6 +27,7 @@ class CalendarAdapter(private var dayList: MutableList<Date>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
         if (position > 6) {
             val dateCalendar: Calendar = Calendar.getInstance()
             val monthDate: Date = dayList[position]
@@ -64,12 +68,15 @@ class CalendarAdapter(private var dayList: MutableList<Date>) :
         }
 
         holder.tvDay.setOnClickListener {
-            if (position > 6) {
+            if (position > 6 && holder.tvDay.currentTextColor != Color.argb(255, 194, 194, 194)) {
                 val handler = Handler()
                 val runnable = Runnable {
                     kotlin.run {
-                        if (i == 1)
+                        if (i == 1) {
                             holder.tvDay.setBackgroundResource(R.drawable.bg_item_calendar_click)
+                            dayClick = dayList[position]
+                            numClick = 1
+                        }
                         i = 0
                     }
                 }
@@ -84,12 +91,26 @@ class CalendarAdapter(private var dayList: MutableList<Date>) :
                         i = 0
                         handler.removeCallbacks(runnable)
                         holder.tvDay.setBackgroundResource(R.drawable.bg_item_calendar_doubleclick)
+                        dayClick = dayList[position]
+                        numClick = 2
                     }
                 }
 
             }
         }
         holder.tvDay.setBackgroundResource(R.drawable.bg_item_calendar)
+        if (position > 6 && dayList.indexOf(dayClick) == position && holder.tvDay.currentTextColor != Color.argb(
+                255,
+                194,
+                194,
+                194
+            )
+        ) {
+            if (numClick == 1)
+                holder.tvDay.setBackgroundResource(R.drawable.bg_item_calendar_click)
+            else if (numClick == 2)
+                holder.tvDay.setBackgroundResource(R.drawable.bg_item_calendar_doubleclick)
+        }
     }
 
 

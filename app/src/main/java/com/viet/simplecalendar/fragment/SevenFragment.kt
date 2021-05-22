@@ -39,8 +39,13 @@ class SevenFragment : Fragment() {
         var monthCalendar: Calendar = calendar.clone() as Calendar
         monthCalendar.set(Calendar.DAY_OF_MONTH, 1)
         var firstDayOfMonth: Int =
-            monthCalendar.get(Calendar.DAY_OF_WEEK) - (1 + mainActivity.index)
-        monthCalendar.add(Calendar.DAY_OF_MONTH, -(firstDayOfMonth + 7))
+            monthCalendar.get(Calendar.DAY_OF_WEEK) - mainActivity.index
+
+        monthCalendar.add(Calendar.DAY_OF_MONTH, -firstDayOfMonth)
+        if (monthCalendar.get(Calendar.DAY_OF_MONTH) > 7)
+            monthCalendar.add(Calendar.DAY_OF_MONTH, -7)
+        else
+            monthCalendar.add(Calendar.DAY_OF_MONTH, -14)
 
         while (dates.size < MAX_DAY - 1) {
             dates.add(monthCalendar.time)
