@@ -12,6 +12,7 @@ import com.viet.simplecalendar.R
 import com.viet.simplecalendar.adapter.ViewPagerAdapter
 import com.viet.simplecalendar.fragment.*
 import com.viet.simplecalendar.utils.dayClick
+import com.viet.simplecalendar.utils.lastDayClick
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
@@ -102,7 +103,7 @@ class MainActivity : AppCompatActivity() {
                     date.time = dayClick
                     val month = date.get(Calendar.MONTH)
                     if (state == 1 && month == viewPager.currentItem) {
-                        dataSetChangedFragment(viewPager.currentItem)
+                        dataSetChangedFragment()
                     }
                 }
 
@@ -139,77 +140,197 @@ class MainActivity : AppCompatActivity() {
         listFragment.add(twelveFragment)
     }
 
-    fun dataSetChangedFragment(i: Int) {
-        when (i) {
-            0 -> {
-                twoFragment.calendarAdapter?.notifyDataSetChanged()
-                listFragment[1] = twoFragment
-            }
-            1 -> {
-                oneFragment.calendarAdapter?.notifyDataSetChanged()
-                listFragment[0] = oneFragment
-                threeFragment.calendarAdapter?.notifyDataSetChanged()
-                listFragment[2] = threeFragment
-            }
-            2 -> {
-                twoFragment.calendarAdapter?.notifyDataSetChanged()
-                listFragment[1] = twoFragment
-                fourFragment.calendarAdapter?.notifyDataSetChanged()
-                listFragment[3] = fourFragment
-            }
-            3 -> {
-                threeFragment.calendarAdapter?.notifyDataSetChanged()
-                listFragment[2] = threeFragment
-                fiveFragment.calendarAdapter?.notifyDataSetChanged()
-                listFragment[4] = fiveFragment
-            }
-            4 -> {
-                fourFragment.calendarAdapter?.notifyDataSetChanged()
-                listFragment[3] = fourFragment
-                sixFragment.calendarAdapter?.notifyDataSetChanged()
-                listFragment[5] = sixFragment
-            }
-            5 -> {
-                fiveFragment.calendarAdapter?.notifyDataSetChanged()
-                listFragment[4] = fiveFragment
-                sevenFragment.calendarAdapter?.notifyDataSetChanged()
-                listFragment[6] = sevenFragment
-            }
-            6 -> {
-                sixFragment.calendarAdapter?.notifyDataSetChanged()
-                listFragment[5] = sixFragment
-                eightFragment.calendarAdapter?.notifyDataSetChanged()
-                listFragment[7] = eightFragment
-            }
-            7 -> {
-                sevenFragment.calendarAdapter?.notifyDataSetChanged()
-                listFragment[6] = sevenFragment
-                nineFragment.calendarAdapter?.notifyDataSetChanged()
-                listFragment[8] = nineFragment
-            }
-            8 -> {
-                eightFragment.calendarAdapter?.notifyDataSetChanged()
-                listFragment[7] = eightFragment
-                tenFragment.calendarAdapter?.notifyDataSetChanged()
-                listFragment[9] = tenFragment
-            }
-            9 -> {
-                nineFragment.calendarAdapter?.notifyDataSetChanged()
-                listFragment[8] = nineFragment
-                elevenFragment.calendarAdapter?.notifyDataSetChanged()
-                listFragment[10] = elevenFragment
-            }
-            10 -> {
-                tenFragment.calendarAdapter?.notifyDataSetChanged()
-                listFragment[9] = tenFragment
-                twelveFragment.calendarAdapter?.notifyDataSetChanged()
-                listFragment[11] = twelveFragment
-            }
-            11 -> {
-                elevenFragment.calendarAdapter?.notifyDataSetChanged()
-                listFragment[10] = elevenFragment
-            }
+    fun dataSetChangedFragment() {
+        if (dayClick != null && lastDayClick != null) {
+            val date: Calendar = Calendar.getInstance()
+            date.time = dayClick
+            val monthClick = date.get(Calendar.MONTH)
+            val lastDate: Calendar = Calendar.getInstance()
+            lastDate.time = lastDayClick
+            val lastMonthClick = lastDate.get(Calendar.MONTH)
+            if (date.get(Calendar.YEAR) == lastDate.get(Calendar.YEAR))
+                if (lastMonthClick - monthClick == 1)
+                    when (monthClick) {
+                        0 -> {
+                            twoFragment.calendarAdapter?.notifyItemChanged(
+                                twoFragment.dates.indexOf(
+                                    lastDayClick
+                                )
+                            )
+                            listFragment[1] = twoFragment
+                        }
+                        1 -> {
+                            threeFragment.calendarAdapter?.notifyItemChanged(
+                                threeFragment.dates.indexOf(
+                                    lastDayClick
+                                )
+                            )
+                            listFragment[2] = threeFragment
+                        }
+                        2 -> {
+                            fourFragment.calendarAdapter?.notifyItemChanged(
+                                fourFragment.dates.indexOf(
+                                    lastDayClick
+                                )
+                            )
+                            listFragment[3] = fourFragment
+                        }
+                        3 -> {
+                            fiveFragment.calendarAdapter?.notifyItemChanged(
+                                fiveFragment.dates.indexOf(
+                                    lastDayClick
+                                )
+                            )
+                            listFragment[4] = fiveFragment
+                        }
+                        4 -> {
+                            sixFragment.calendarAdapter?.notifyItemChanged(
+                                sixFragment.dates.indexOf(
+                                    lastDayClick
+                                )
+                            )
+                            listFragment[5] = sixFragment
+                        }
+                        5 -> {
+                            sevenFragment.calendarAdapter?.notifyItemChanged(
+                                sevenFragment.dates.indexOf(
+                                    lastDayClick
+                                )
+                            )
+                            listFragment[6] = sevenFragment
+                        }
+                        6 -> {
+                            eightFragment.calendarAdapter?.notifyItemChanged(
+                                eightFragment.dates.indexOf(
+                                    lastDayClick
+                                )
+                            )
+                            listFragment[7] = eightFragment
+                        }
+                        7 -> {
+                            nineFragment.calendarAdapter?.notifyItemChanged(
+                                nineFragment.dates.indexOf(
+                                    lastDayClick
+                                )
+                            )
+                            listFragment[8] = nineFragment
+                        }
+                        8 -> {
+                            tenFragment.calendarAdapter?.notifyItemChanged(
+                                tenFragment.dates.indexOf(
+                                    lastDayClick
+                                )
+                            )
+                            listFragment[9] = tenFragment
+                        }
+                        9 -> {
+                            elevenFragment.calendarAdapter?.notifyItemChanged(
+                                elevenFragment.dates.indexOf(
+                                    lastDayClick
+                                )
+                            )
+                            listFragment[10] = elevenFragment
+                        }
+                        10 -> {
+                            twelveFragment.calendarAdapter?.notifyItemChanged(
+                                twelveFragment.dates.indexOf(
+                                    lastDayClick
+                                )
+                            )
+                            listFragment[11] = twelveFragment
+                        }
+                    }
+                else if (lastMonthClick - monthClick == -1)
+                    when (monthClick) {
+                        1 -> {
+                            oneFragment.calendarAdapter?.notifyItemChanged(
+                                oneFragment.dates.indexOf(
+                                    lastDayClick
+                                )
+                            )
+                            listFragment[0] = oneFragment
+                        }
+                        2 -> {
+                            twoFragment.calendarAdapter?.notifyItemChanged(
+                                twoFragment.dates.indexOf(
+                                    lastDayClick
+                                )
+                            )
+                            listFragment[1] = twoFragment
+                        }
+                        3 -> {
+                            threeFragment.calendarAdapter?.notifyItemChanged(
+                                threeFragment.dates.indexOf(
+                                    lastDayClick
+                                )
+                            )
+                            listFragment[2] = threeFragment
+                        }
+                        4 -> {
+                            fourFragment.calendarAdapter?.notifyItemChanged(
+                                fourFragment.dates.indexOf(
+                                    lastDayClick
+                                )
+                            )
+                            listFragment[3] = fourFragment
+                        }
+                        5 -> {
+                            fiveFragment.calendarAdapter?.notifyItemChanged(
+                                fiveFragment.dates.indexOf(
+                                    lastDayClick
+                                )
+                            )
+                            listFragment[4] = fiveFragment
+                        }
+                        6 -> {
+                            sixFragment.calendarAdapter?.notifyItemChanged(
+                                sixFragment.dates.indexOf(
+                                    lastDayClick
+                                )
+                            )
+                            listFragment[5] = sixFragment
+                        }
+                        7 -> {
+                            sevenFragment.calendarAdapter?.notifyItemChanged(
+                                sevenFragment.dates.indexOf(
+                                    lastDayClick
+                                )
+                            )
+                            listFragment[6] = sevenFragment
+                        }
+                        8 -> {
+                            eightFragment.calendarAdapter?.notifyItemChanged(
+                                eightFragment.dates.indexOf(
+                                    lastDayClick
+                                )
+                            )
+                            listFragment[7] = eightFragment
+                        }
+                        9 -> {
+                            nineFragment.calendarAdapter?.notifyItemChanged(
+                                nineFragment.dates.indexOf(
+                                    lastDayClick
+                                )
+                            )
+                            listFragment[8] = nineFragment
+                        }
+                        10 -> {
+                            tenFragment.calendarAdapter?.notifyItemChanged(
+                                tenFragment.dates.indexOf(
+                                    lastDayClick
+                                )
+                            )
+                            listFragment[9] = tenFragment
+                        }
+                        11 -> {
+                            elevenFragment.calendarAdapter?.notifyItemChanged(
+                                elevenFragment.dates.indexOf(
+                                    lastDayClick
+                                )
+                            )
+                            listFragment[10] = elevenFragment
+                        }
+                    }
         }
-
     }
 }

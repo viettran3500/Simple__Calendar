@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.viet.simplecalendar.R
 import com.viet.simplecalendar.activity.MainActivity
 import com.viet.simplecalendar.utils.dayClick
+import com.viet.simplecalendar.utils.lastDayClick
 import com.viet.simplecalendar.utils.numClick
 import java.util.*
 
@@ -75,6 +76,7 @@ class CalendarAdapter(private var dayList: MutableList<Date>) :
                         if (i == 1) {
                             holder.tvDay.setBackgroundResource(R.drawable.bg_item_calendar_click)
                             notifyItemChanged(dayList.indexOf(dayClick))
+                            lastDayClick = dayClick
                             dayClick = dayList[position]
                             numClick = 1
                         }
@@ -91,6 +93,7 @@ class CalendarAdapter(private var dayList: MutableList<Date>) :
                         handler.removeCallbacks(runnable)
                         holder.tvDay.setBackgroundResource(R.drawable.bg_item_calendar_doubleclick)
                         notifyItemChanged(dayList.indexOf(dayClick))
+                        lastDayClick = dayClick
                         dayClick = dayList[position]
                         numClick = 2
                     }
