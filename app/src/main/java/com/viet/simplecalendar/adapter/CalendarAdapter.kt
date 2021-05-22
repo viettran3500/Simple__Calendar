@@ -18,7 +18,7 @@ class CalendarAdapter(private var dayList: MutableList<Date>) :
 
     var i = 0
     var p = 0
-    val nowDate = Calendar.getInstance()
+    private val nowDate: Calendar = Calendar.getInstance()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =
@@ -74,6 +74,7 @@ class CalendarAdapter(private var dayList: MutableList<Date>) :
                     kotlin.run {
                         if (i == 1) {
                             holder.tvDay.setBackgroundResource(R.drawable.bg_item_calendar_click)
+                            notifyItemChanged(dayList.indexOf(dayClick))
                             dayClick = dayList[position]
                             numClick = 1
                         }
@@ -82,8 +83,6 @@ class CalendarAdapter(private var dayList: MutableList<Date>) :
                 }
                 i++
                 if (i == 1) {
-                    if (p != position)
-                        notifyItemChanged(p)
                     p = position
                     handler.postDelayed(runnable, 200)
                 } else if (i == 2) {
@@ -91,6 +90,7 @@ class CalendarAdapter(private var dayList: MutableList<Date>) :
                         i = 0
                         handler.removeCallbacks(runnable)
                         holder.tvDay.setBackgroundResource(R.drawable.bg_item_calendar_doubleclick)
+                        notifyItemChanged(dayList.indexOf(dayClick))
                         dayClick = dayList[position]
                         numClick = 2
                     }

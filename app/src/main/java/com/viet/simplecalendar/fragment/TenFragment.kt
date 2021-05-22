@@ -21,25 +21,25 @@ class TenFragment : Fragment() {
     var dateFormat: SimpleDateFormat = SimpleDateFormat("MMMM yyyy")
 
     var dates: MutableList<Date> = mutableListOf()
-    lateinit var calendarAdapter: CalendarAdapter
+    var calendarAdapter: CalendarAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        var view: View = inflater.inflate(R.layout.fragment_seven, container, false)
+        val view: View = inflater.inflate(R.layout.fragment_seven, container, false)
 
         mainActivity = activity as MainActivity
         calendar = mainActivity.calendar
         checkMonth(calendar, 9)
 
-        var monthYear: String = dateFormat.format(calendar.time)
+        val monthYear: String = dateFormat.format(calendar.time)
         view.tvMonthYear.text = monthYear
         dates.clear()
-        var monthCalendar: Calendar = calendar.clone() as Calendar
+        val monthCalendar: Calendar = calendar.clone() as Calendar
         monthCalendar.set(Calendar.DAY_OF_MONTH, 1)
-        var firstDayOfMonth: Int =
+        val firstDayOfMonth: Int =
             monthCalendar.get(Calendar.DAY_OF_WEEK) - mainActivity.index
 
         monthCalendar.add(Calendar.DAY_OF_MONTH, -firstDayOfMonth)
@@ -58,7 +58,7 @@ class TenFragment : Fragment() {
         calendarAdapter = CalendarAdapter(dates)
         view.rcvCalendar.adapter = calendarAdapter
 
-        calendarAdapter.notifyDataSetChanged()
+        calendarAdapter!!.notifyDataSetChanged()
 
         return view
     }

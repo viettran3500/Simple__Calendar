@@ -5,9 +5,9 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.viet.simplecalendar.fragment.*
 
-class ViewPagerAdapter(fm: FragmentManager, behavior: Int) :
+class ViewPagerAdapter(fm: FragmentManager, behavior: Int, listFragment: MutableList<Fragment>) :
     FragmentStatePagerAdapter(fm, behavior) {
-
+    var list = listFragment
     override fun getCount(): Int {
         return 12
     }
@@ -15,43 +15,43 @@ class ViewPagerAdapter(fm: FragmentManager, behavior: Int) :
     override fun getItem(position: Int): Fragment {
         when (position) {
             0 -> {
-                return OneFragment()
+                return list[0]
             }
             1 -> {
-                return TwoFragment()
+                return list[1]
             }
             2 -> {
-                return ThreeFragment()
+                return list[2]
             }
             3 -> {
-                return FourFragment()
+                return list[3]
             }
             4 -> {
-                return FiveFragment()
+                return list[4]
             }
             5 -> {
-                return SixFragment()
+                return list[5]
             }
             6 -> {
-                return SevenFragment()
+                return list[6]
             }
             7 -> {
-                return EightFragment()
+                return list[7]
             }
             8 -> {
-                return NineFragment()
+                return list[8]
             }
             9 -> {
-                return TenFragment()
+                return list[9]
             }
             10 -> {
-                return ElevenFragment()
+                return list[10]
             }
             11 -> {
-                return TwelveFragment()
+                return list[11]
             }
         }
-        return OneFragment()
+        return list[0]
     }
 
 }
